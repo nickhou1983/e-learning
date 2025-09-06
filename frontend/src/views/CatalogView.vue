@@ -335,8 +335,7 @@ const enrollCourse = async (courseId: number) => {
 }
 
 const viewCourseDetail = (courseId: number) => {
-  alert(`查看课程详情 ${courseId}`)
-  // router.push(`/course/${courseId}`)
+  router.push(`/course/${courseId}`)
 }
 
 onMounted(() => {

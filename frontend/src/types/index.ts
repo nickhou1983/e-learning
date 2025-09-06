@@ -41,6 +41,43 @@ export interface Course {
   thumbnail?: string
   instructorId: number
   createdAt: string
+  // Extended fields for course detail
+  price?: number
+  instructor?: string
+  instructorAvatar?: string
+  instructorBio?: string
+  whatYouWillLearn?: string[]
+  prerequisites?: string[]
+  curriculum?: CourseChapter[]
+  reviews?: CourseReview[]
+  tags?: string[]
+  level?: string
+}
+
+export interface CourseChapter {
+  id: number
+  title: string
+  lessons: CourseChapterLesson[]
+  duration: number
+}
+
+export interface CourseChapterLesson {
+  id: number
+  title: string
+  duration: number
+  type: 'video' | 'text' | 'quiz'
+  isCompleted?: boolean
+  isFree?: boolean
+}
+
+export interface CourseReview {
+  id: number
+  userId: number
+  userName: string
+  userAvatar?: string
+  rating: number
+  comment: string
+  createdAt: string
 }
 
 export interface Lesson {
