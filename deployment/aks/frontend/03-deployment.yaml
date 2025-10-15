@@ -38,7 +38,8 @@ spec:
         fsGroup: 1001
       containers:
       - name: frontend
-        image: #{ACR_LOGIN_SERVER}#/#{CONTAINER_NAME}#:#{IMAGE_TAG}#
+        # image: #{ACR_LOGIN_SERVER}#/#{CONTAINER_NAME}#:#{IMAGE_TAG}#
+        image: #{ACR_LOGIN_SERVER}#/#{CONTAINER_NAME}#:sre-demo
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
