@@ -51,6 +51,12 @@ const router = createRouter({
       component: () => import('@/views/SettingsView.vue'),
       meta: { requiresAuth: true }
     },
+    {
+      path: '/github',
+      name: 'github',
+      component: () => import('@/views/GitHubView.vue'),
+      meta: { requiresAuth: false }
+    },
     // 管理员路由
     {
       path: '/admin/users',

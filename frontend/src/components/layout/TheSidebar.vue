@@ -46,6 +46,7 @@
             <UserOutlined v-else-if="item.icon === 'UserOutlined'" />
             <FileOutlined v-else-if="item.icon === 'FileOutlined'" />
             <DeleteOutlined v-else-if="item.icon === 'DeleteOutlined'" />
+            <GithubOutlined v-else-if="item.icon === 'GithubOutlined'" />
             <span>{{ item.title }}</span>
           </a-menu-item>
 
@@ -102,7 +103,8 @@ import {
   UserOutlined,
   TeamOutlined,
   TagsOutlined,
-  BookOutlined
+  BookOutlined,
+  GithubOutlined
 } from '@ant-design/icons-vue'
 import { useUserStore } from '@/stores/user'
 
@@ -145,6 +147,12 @@ const basicMenuItems = [
     title: '学习进度',
     icon: 'BarChartOutlined',
     path: '/progress'
+  },
+  {
+    key: 'github',
+    title: 'GitHub',
+    icon: 'GithubOutlined',
+    path: '/github'
   },
   {
     key: 'profile',
