@@ -71,3 +71,42 @@ export interface ApiResponse<T = any> {
   message?: string
   error?: string
 }
+
+// Dashboard/Homepage related types
+export interface UserStatistics {
+  completedCourses: number
+  inProgressCourses: number
+  studyTimeHours: number
+  certificates: number
+}
+
+export interface ContinueLearningCourse {
+  id: number
+  title: string
+  instructor: string
+  progress: number
+  thumbnail: string
+}
+
+export interface RecommendedCourse {
+  id: number
+  title: string
+  description: string
+  rating: number
+  students: number
+  thumbnail: string
+}
+
+export interface MonthlyProgress {
+  targetHours: number
+  completedHours: number
+  remainingHours: number
+  progressPercentage: number
+}
+
+export interface DashboardData {
+  statistics: UserStatistics
+  continueLearning: ContinueLearningCourse[]
+  recommended: RecommendedCourse[]
+  monthlyProgress: MonthlyProgress
+}

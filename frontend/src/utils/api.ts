@@ -1,5 +1,16 @@
 import axios, { type AxiosResponse } from 'axios'
-import type { LoginCredentials, RegisterData, User, Course, ApiResponse } from '@/types'
+import type { 
+  LoginCredentials, 
+  RegisterData, 
+  User, 
+  Course, 
+  ApiResponse,
+  DashboardData,
+  UserStatistics,
+  ContinueLearningCourse,
+  RecommendedCourse,
+  MonthlyProgress
+} from '@/types'
 
 // 创建 axios 实例
 const api = axios.create({
@@ -122,6 +133,67 @@ export const getCourse = async (id: number): Promise<ApiResponse<Course>> => {
     return {
       success: false,
       message: error.response?.data?.message || '获取课程详情失败'
+    }
+  }
+}
+
+// 首页/仪表板相关 API
+export const getDashboardData = async (): Promise<ApiResponse<DashboardData>> => {
+  try {
+    const response = await api.get('/dashboard')
+    return ensureApiResponse<DashboardData>(response)
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response?.data?.message || '获取仪表板数据失败'
+    }
+  }
+}
+
+export const getUserStatistics = async (): Promise<ApiResponse<UserStatistics>> => {
+  try {
+    const response = await api.get('/dashboard/statistics')
+    return ensureApiResponse<UserStatistics>(response)
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response?.data?.message || '获取用户统计数据失败'
+    }
+  }
+}
+
+export const getContinueLearningCourses = async (): Promise<ApiResponse<ContinueLearningCourse[]>> => {
+  try {
+    const response = await api.get('/dashboard/continue-learning')
+    return ensureApiResponse<ContinueLearningCourse[]>(response)
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response?.data?.message || '获取继续学习课程失败'
+    }
+  }
+}
+
+export const getRecommendedCourses = async (): Promise<ApiResponse<RecommendedCourse[]>> => {
+  try {
+    const response = await api.get('/dashboard/recommended')
+    return ensureApiResponse<RecommendedCourse[]>(response)
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response?.data?.message || '获取推荐课程失败'
+    }
+  }
+}
+
+export const getMonthlyProgress = async (): Promise<ApiResponse<MonthlyProgress>> => {
+  try {
+    const response = await api.get('/dashboard/monthly-progress')
+    return ensureApiResponse<MonthlyProgress>(response)
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response?.data?.message || '获取月度进度失败'
     }
   }
 }
