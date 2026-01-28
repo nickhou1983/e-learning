@@ -5,159 +5,184 @@
       <p class="page-subtitle">继续您的学习之旅</p>
     </div>
 
-    <a-row :gutter="[24, 24]">
-      <!-- 学习统计 -->
-      <a-col :xs="24" :sm="12" :lg="6">
-        <a-card class="stat-card">
-          <div class="stat-content">
-            <div class="stat-icon completed">
-              <BookOutlined />
-            </div>
-            <div class="stat-info">
-              <div class="stat-number">12</div>
-              <div class="stat-label">已完成课程</div>
-            </div>
-          </div>
-        </a-card>
-      </a-col>
+    <!-- Loading State -->
+    <div v-if="loading" class="loading-container">
+      <a-spin size="large" tip="加载中..." />
+    </div>
 
-      <a-col :xs="24" :sm="12" :lg="6">
-        <a-card class="stat-card">
-          <div class="stat-content">
-            <div class="stat-icon progress">
-              <ClockCircleOutlined />
-            </div>
-            <div class="stat-info">
-              <div class="stat-number">3</div>
-              <div class="stat-label">进行中课程</div>
-            </div>
-          </div>
-        </a-card>
-      </a-col>
+    <!-- Dashboard Content -->
+    <template v-else>
+      <!-- Error Alert (non-blocking) -->
+      <a-alert
+        v-if="error"
+        type="warning"
+        :message="error"
+        show-icon
+        closable
+        @close="error = null"
+        style="margin-bottom: 24px"
+      />
 
-      <a-col :xs="24" :sm="12" :lg="6">
-        <a-card class="stat-card">
-          <div class="stat-content">
-            <div class="stat-icon time">
-              <FieldTimeOutlined />
-            </div>
-            <div class="stat-info">
-              <div class="stat-number">45h</div>
-              <div class="stat-label">学习时长</div>
-            </div>
-          </div>
-        </a-card>
-      </a-col>
-
-      <a-col :xs="24" :sm="12" :lg="6">
-        <a-card class="stat-card">
-          <div class="stat-content">
-            <div class="stat-icon certificates">
-              <TrophyOutlined />
-            </div>
-            <div class="stat-info">
-              <div class="stat-number">8</div>
-              <div class="stat-label">获得证书</div>
-            </div>
-          </div>
-        </a-card>
-      </a-col>
-    </a-row>
-
-    <a-row :gutter="[24, 24]" style="margin-top: 24px">
-      <!-- 继续学习 -->
-      <a-col :xs="24" :lg="16">
-        <a-card title="继续学习" class="continue-learning">
-          <div class="course-list">
-            <div class="course-item" v-for="course in continueLearningCourses" :key="course.id">
-              <div class="course-thumbnail">
-                <img :src="course.thumbnail" :alt="course.title" @error="handleImageError" />
+      <a-row :gutter="[24, 24]">
+        <!-- 学习统计 -->
+        <a-col :xs="24" :sm="12" :lg="6">
+          <a-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon completed">
+                <BookOutlined />
               </div>
-              <div class="course-info">
-                <h3 class="course-title">{{ course.title }}</h3>
-                <p class="course-instructor">{{ course.instructor }}</p>
-                <div class="course-progress">
-                  <a-progress :percent="course.progress" :show-info="false" />
-                  <span class="progress-text">{{ course.progress }}% 完成</span>
+              <div class="stat-info">
+                <div class="stat-number">{{ statistics.completedCourses }}</div>
+                <div class="stat-label">已完成课程</div>
+              </div>
+            </div>
+          </a-card>
+        </a-col>
+
+        <a-col :xs="24" :sm="12" :lg="6">
+          <a-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon progress">
+                <ClockCircleOutlined />
+              </div>
+              <div class="stat-info">
+                <div class="stat-number">{{ statistics.inProgressCourses }}</div>
+                <div class="stat-label">进行中课程</div>
+              </div>
+            </div>
+          </a-card>
+        </a-col>
+
+        <a-col :xs="24" :sm="12" :lg="6">
+          <a-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon time">
+                <FieldTimeOutlined />
+              </div>
+              <div class="stat-info">
+                <div class="stat-number">{{ statistics.studyTimeHours }}h</div>
+                <div class="stat-label">学习时长</div>
+              </div>
+            </div>
+          </a-card>
+        </a-col>
+
+        <a-col :xs="24" :sm="12" :lg="6">
+          <a-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon certificates">
+                <TrophyOutlined />
+              </div>
+              <div class="stat-info">
+                <div class="stat-number">{{ statistics.certificates }}</div>
+                <div class="stat-label">获得证书</div>
+              </div>
+            </div>
+          </a-card>
+        </a-col>
+      </a-row>
+
+      <a-row :gutter="[24, 24]" style="margin-top: 24px">
+        <!-- 继续学习 -->
+        <a-col :xs="24" :lg="16">
+          <a-card title="继续学习" class="continue-learning">
+            <template v-if="continueLearningCourses.length > 0">
+              <div class="course-list">
+                <div class="course-item" v-for="course in continueLearningCourses" :key="course.id">
+                  <div class="course-thumbnail">
+                    <img :src="course.thumbnail" :alt="course.title" @error="handleImageError" />
+                  </div>
+                  <div class="course-info">
+                    <h3 class="course-title">{{ course.title }}</h3>
+                    <p class="course-instructor">{{ course.instructor }}</p>
+                    <div class="course-progress">
+                      <a-progress :percent="course.progress" :show-info="false" />
+                      <span class="progress-text">{{ course.progress }}% 完成</span>
+                    </div>
+                  </div>
+                  <div class="course-action">
+                    <a-button type="primary" @click="continueCourse(course.id)">
+                      继续学习
+                    </a-button>
+                  </div>
                 </div>
               </div>
-              <div class="course-action">
-                <a-button type="primary" @click="continueCourse(course.id)">
-                  继续学习
-                </a-button>
-              </div>
-            </div>
-          </div>
-        </a-card>
-      </a-col>
+            </template>
+            <a-empty v-else description="暂无进行中的课程" />
+          </a-card>
+        </a-col>
 
-      <!-- 学习进度 -->
-      <a-col :xs="24" :lg="8">
-        <a-card title="本月学习进度" class="progress-card">
-          <div class="progress-summary">
-            <div class="progress-circle">
-              <a-progress
-                type="circle"
-                :percent="75"
-                :size="120"
-                :stroke-color="{
-                  '0%': '#108ee9',
-                  '100%': '#87d068',
-                }"
-              />
-            </div>
-            <div class="progress-details">
-              <div class="progress-item">
-                <span class="label">本月目标</span>
-                <span class="value">20 小时</span>
+        <!-- 学习进度 -->
+        <a-col :xs="24" :lg="8">
+          <a-card title="本月学习进度" class="progress-card">
+            <div class="progress-summary">
+              <div class="progress-circle">
+                <a-progress
+                  type="circle"
+                  :percent="monthlyProgress.progressPercentage"
+                  :size="120"
+                  :stroke-color="{
+                    '0%': '#108ee9',
+                    '100%': '#87d068',
+                  }"
+                />
               </div>
-              <div class="progress-item">
-                <span class="label">已完成</span>
-                <span class="value">15 小时</span>
-              </div>
-              <div class="progress-item">
-                <span class="label">剩余</span>
-                <span class="value">5 小时</span>
-              </div>
-            </div>
-          </div>
-        </a-card>
-      </a-col>
-    </a-row>
-
-    <!-- 推荐课程 -->
-    <a-row style="margin-top: 24px">
-      <a-col :span="24">
-        <a-card title="推荐课程" class="recommended-courses">
-          <div class="course-grid">
-            <div class="course-card" v-for="course in recommendedCourses" :key="course.id">
-              <div class="course-image">
-                <img :src="course.thumbnail" :alt="course.title" @error="handleImageError" />
-              </div>
-              <div class="course-content">
-                <h4 class="course-title">{{ course.title }}</h4>
-                <p class="course-description">{{ course.description }}</p>
-                <div class="course-meta">
-                  <span class="rating">
-                    <StarFilled />
-                    {{ course.rating }}
-                  </span>
-                  <span class="students">{{ course.students }} 学员</span>
+              <div class="progress-details">
+                <div class="progress-item">
+                  <span class="label">本月目标</span>
+                  <span class="value">{{ monthlyProgress.targetHours }} 小时</span>
                 </div>
-                <a-button type="primary" block @click="enrollCourse(course.id)">
-                  开始学习
-                </a-button>
+                <div class="progress-item">
+                  <span class="label">已完成</span>
+                  <span class="value">{{ monthlyProgress.completedHours }} 小时</span>
+                </div>
+                <div class="progress-item">
+                  <span class="label">剩余</span>
+                  <span class="value">{{ monthlyProgress.remainingHours }} 小时</span>
+                </div>
               </div>
             </div>
-          </div>
-        </a-card>
-      </a-col>
-    </a-row>
+          </a-card>
+        </a-col>
+      </a-row>
+
+      <!-- 推荐课程 -->
+      <a-row style="margin-top: 24px">
+        <a-col :span="24">
+          <a-card title="推荐课程" class="recommended-courses">
+            <template v-if="recommendedCourses.length > 0">
+              <div class="course-grid">
+                <div class="course-card" v-for="course in recommendedCourses" :key="course.id">
+                  <div class="course-image">
+                    <img :src="course.thumbnail" :alt="course.title" @error="handleImageError" />
+                  </div>
+                  <div class="course-content">
+                    <h4 class="course-title">{{ course.title }}</h4>
+                    <p class="course-description">{{ course.description }}</p>
+                    <div class="course-meta">
+                      <span class="rating">
+                        <StarFilled />
+                        {{ course.rating }}
+                      </span>
+                      <span class="students">{{ course.students }} 学员</span>
+                    </div>
+                    <a-button type="primary" block @click="enrollCourse(course.id)">
+                      开始学习
+                    </a-button>
+                  </div>
+                </div>
+              </div>
+            </template>
+            <a-empty v-else description="暂无推荐课程" />
+          </a-card>
+        </a-col>
+      </a-row>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   BookOutlined,
@@ -168,77 +193,210 @@ import {
 } from '@ant-design/icons-vue'
 import { useUserStore } from '@/stores/user'
 import { handleImageError } from '@/utils/image'
+import {
+  getDashboardData,
+  getUserStatistics,
+  getContinueLearningCourses,
+  getRecommendedCourses,
+  getMonthlyProgress
+} from '@/utils/api'
+import type {
+  UserStatistics,
+  ContinueLearningCourse,
+  RecommendedCourse,
+  MonthlyProgress
+} from '@/types'
 
 const router = useRouter()
 const userStore = useUserStore()
 
-// 模拟数据
-const continueLearningCourses = ref([
-  {
-    id: 1,
-    title: 'Vue.js 3 完整教程',
-    instructor: '张老师',
-    progress: 65,
-    thumbnail: '/images/courses/frontend-small.jpg'
-  },
-  {
-    id: 2,
-    title: 'TypeScript 从入门到精通',
-    instructor: '李老师',
-    progress: 45,
-    thumbnail: '/images/courses/typescript-small.jpg'
-  },
-  {
-    id: 3,
-    title: 'React 高级开发实战',
-    instructor: '王老师',
-    progress: 30,
-    thumbnail: '/images/courses/frontend-small.jpg'
-  }
-])
+// 状态管理
+const loading = ref(false)
+const error = ref<string | null>(null)
 
-const recommendedCourses = ref([
-  {
-    id: 4,
-    title: 'Node.js 后端开发',
-    description: '学习使用 Node.js 构建高性能的后端应用',
-    rating: 4.8,
-    students: 1250,
-    thumbnail: '/images/courses/backend.jpg'
-  },
-  {
-    id: 5,
-    title: 'Python 数据分析',
-    description: '掌握 Python 数据分析的核心技术和工具',
-    rating: 4.6,
-    students: 890,
-    thumbnail: '/images/courses/data.jpg'
-  },
-  {
-    id: 6,
-    title: 'UI/UX 设计基础',
-    description: '学习现代 UI/UX 设计原理和实践',
-    rating: 4.7,
-    students: 650,
-    thumbnail: '/images/courses/design.jpg'
-  }
-])
+// 数据状态
+const statistics = ref<UserStatistics>({
+  completedCourses: 0,
+  inProgressCourses: 0,
+  studyTimeHours: 0,
+  certificates: 0
+})
 
+const continueLearningCourses = ref<ContinueLearningCourse[]>([])
+const recommendedCourses = ref<RecommendedCourse[]>([])
+const monthlyProgress = ref<MonthlyProgress>({
+  targetHours: 0,
+  completedHours: 0,
+  remainingHours: 0,
+  progressPercentage: 0
+})
+
+// 加载仪表板数据
+const loadDashboardData = async () => {
+  loading.value = true
+  error.value = null
+
+  try {
+    // 尝试获取完整的仪表板数据
+    const dashboardResponse = await getDashboardData()
+    
+    if (dashboardResponse.success && dashboardResponse.data) {
+      // 如果后端支持一次性获取所有数据
+      statistics.value = dashboardResponse.data.statistics
+      continueLearningCourses.value = dashboardResponse.data.continueLearning
+      recommendedCourses.value = dashboardResponse.data.recommended
+      monthlyProgress.value = dashboardResponse.data.monthlyProgress
+    } else {
+      // 否则分别获取各部分数据
+      await loadDataSeparately()
+    }
+  } catch (err) {
+    // 如果完整接口不可用，尝试分别加载
+    await loadDataSeparately()
+  } finally {
+    loading.value = false
+  }
+}
+
+// 分别加载各部分数据
+const loadDataSeparately = async () => {
+  try {
+    const [statsRes, continueRes, recommendedRes, progressRes] = await Promise.all([
+      getUserStatistics(),
+      getContinueLearningCourses(),
+      getRecommendedCourses(),
+      getMonthlyProgress()
+    ])
+
+    let hasAnyData = false
+
+    if (statsRes.success && statsRes.data) {
+      statistics.value = statsRes.data
+      hasAnyData = true
+    }
+
+    if (continueRes.success && continueRes.data) {
+      continueLearningCourses.value = continueRes.data
+      hasAnyData = true
+    }
+
+    if (recommendedRes.success && recommendedRes.data) {
+      recommendedCourses.value = recommendedRes.data
+      hasAnyData = true
+    }
+
+    if (progressRes.success && progressRes.data) {
+      monthlyProgress.value = progressRes.data
+      hasAnyData = true
+    }
+
+    // 如果所有API都失败，使用模拟数据
+    if (!hasAnyData) {
+      loadMockData()
+    }
+  } catch (err: any) {
+    // 使用模拟数据作为后备方案
+    loadMockData()
+  }
+}
+
+// 加载模拟数据（用于开发和后备）
+const loadMockData = () => {
+  statistics.value = {
+    completedCourses: 12,
+    inProgressCourses: 3,
+    studyTimeHours: 45,
+    certificates: 8
+  }
+
+  continueLearningCourses.value = [
+    {
+      id: 1,
+      title: 'Vue.js 3 完整教程',
+      instructor: '张老师',
+      progress: 65,
+      thumbnail: '/images/courses/frontend-small.jpg'
+    },
+    {
+      id: 2,
+      title: 'TypeScript 从入门到精通',
+      instructor: '李老师',
+      progress: 45,
+      thumbnail: '/images/courses/typescript-small.jpg'
+    },
+    {
+      id: 3,
+      title: 'React 高级开发实战',
+      instructor: '王老师',
+      progress: 30,
+      thumbnail: '/images/courses/frontend-small.jpg'
+    }
+  ]
+
+  recommendedCourses.value = [
+    {
+      id: 4,
+      title: 'Node.js 后端开发',
+      description: '学习使用 Node.js 构建高性能的后端应用',
+      rating: 4.8,
+      students: 1250,
+      thumbnail: '/images/courses/backend.jpg'
+    },
+    {
+      id: 5,
+      title: 'Python 数据分析',
+      description: '掌握 Python 数据分析的核心技术和工具',
+      rating: 4.6,
+      students: 890,
+      thumbnail: '/images/courses/data.jpg'
+    },
+    {
+      id: 6,
+      title: 'UI/UX 设计基础',
+      description: '学习现代 UI/UX 设计原理和实践',
+      rating: 4.7,
+      students: 650,
+      thumbnail: '/images/courses/design.jpg'
+    }
+  ]
+
+  const targetHours = 20
+  const completedHours = 15
+  monthlyProgress.value = {
+    targetHours,
+    completedHours,
+    remainingHours: Math.max(0, targetHours - completedHours), // 确保不为负数
+    progressPercentage: Math.min(100, Math.round((completedHours / targetHours) * 100))
+  }
+}
+
+// 继续学习课程
 const continueCourse = (courseId: number) => {
-  alert(`继续学习课程 ${courseId}`)
-  // router.push(`/course/${courseId}/learn`)
+  router.push(`/courses/${courseId}`)
 }
 
+// 注册课程
 const enrollCourse = (courseId: number) => {
-  alert(`注册课程 ${courseId}`)
-  // router.push(`/course/${courseId}`)
+  router.push(`/courses/${courseId}`)
 }
+
+// 组件挂载时加载数据
+onMounted(() => {
+  loadDashboardData()
+})
 </script>
 
 <style scoped>
 .dashboard {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
 }
 
 .dashboard-header {

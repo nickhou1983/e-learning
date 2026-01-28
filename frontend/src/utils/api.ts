@@ -1,5 +1,16 @@
 import axios, { type AxiosResponse } from 'axios'
-import type { LoginCredentials, RegisterData, User, Course, ApiResponse } from '@/types'
+import type { 
+  LoginCredentials, 
+  RegisterData, 
+  User, 
+  Course, 
+  ApiResponse,
+  DashboardData,
+  UserStatistics,
+  ContinueLearningCourse,
+  RecommendedCourse,
+  MonthlyProgress
+} from '@/types'
 
 // 创建 axios 实例
 const api = axios.create({
@@ -20,6 +31,8 @@ api.interceptors.request.use((config) => {
 })
 
 // 响应拦截器 - 处理错误
+// 注意：此拦截器会自动解包 response.data，因此后续的 API 方法会直接接收到数据
+// 确保后端始终返回一致的 ApiResponse 格式：{ success: boolean, data?: T, message?: string }
 api.interceptors.response.use(
   (response: AxiosResponse) => response.data,
   (error) => {
@@ -122,6 +135,67 @@ export const getCourse = async (id: number): Promise<ApiResponse<Course>> => {
     return {
       success: false,
       message: error.response?.data?.message || '获取课程详情失败'
+    }
+  }
+}
+
+// 首页/仪表板相关 API
+export const getDashboardData = async (): Promise<ApiResponse<DashboardData>> => {
+  try {
+    const response = await api.get('/dashboard')
+    return ensureApiResponse<DashboardData>(response)
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response?.data?.message || '获取仪表板数据失败'
+    }
+  }
+}
+
+export const getUserStatistics = async (): Promise<ApiResponse<UserStatistics>> => {
+  try {
+    const response = await api.get('/dashboard/statistics')
+    return ensureApiResponse<UserStatistics>(response)
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response?.data?.message || '获取用户统计数据失败'
+    }
+  }
+}
+
+export const getContinueLearningCourses = async (): Promise<ApiResponse<ContinueLearningCourse[]>> => {
+  try {
+    const response = await api.get('/dashboard/continue-learning')
+    return ensureApiResponse<ContinueLearningCourse[]>(response)
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response?.data?.message || '获取继续学习课程失败'
+    }
+  }
+}
+
+export const getRecommendedCourses = async (): Promise<ApiResponse<RecommendedCourse[]>> => {
+  try {
+    const response = await api.get('/dashboard/recommended')
+    return ensureApiResponse<RecommendedCourse[]>(response)
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response?.data?.message || '获取推荐课程失败'
+    }
+  }
+}
+
+export const getMonthlyProgress = async (): Promise<ApiResponse<MonthlyProgress>> => {
+  try {
+    const response = await api.get('/dashboard/monthly-progress')
+    return ensureApiResponse<MonthlyProgress>(response)
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response?.data?.message || '获取月度进度失败'
     }
   }
 }
