@@ -16,6 +16,9 @@ import {
   Space,
   Divider,
   Checkbox,
+  Spin,
+  Alert,
+  Empty,
   message,
   notification
 } from 'ant-design-vue'
@@ -40,6 +43,9 @@ export default function setupAntd(app: App) {
   app.use(Space)
   app.use(Divider)
   app.use(Checkbox)
+  app.use(Spin)
+  app.use(Alert)
+  app.use(Empty)
 
   // 全局配置
   app.config.globalProperties.$message = message

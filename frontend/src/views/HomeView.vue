@@ -268,24 +268,36 @@ const loadDataSeparately = async () => {
       getMonthlyProgress()
     ])
 
+    let hasAnyData = false
+
     if (statsRes.success && statsRes.data) {
       statistics.value = statsRes.data
+      hasAnyData = true
     }
 
     if (continueRes.success && continueRes.data) {
       continueLearningCourses.value = continueRes.data
+      hasAnyData = true
     }
 
     if (recommendedRes.success && recommendedRes.data) {
       recommendedCourses.value = recommendedRes.data
+      hasAnyData = true
     }
 
     if (progressRes.success && progressRes.data) {
       monthlyProgress.value = progressRes.data
+      hasAnyData = true
+    }
+
+    // 如果所有API都失败，使用模拟数据
+    if (!hasAnyData) {
+      console.log('所有API调用失败，使用模拟数据')
+      loadMockData()
     }
   } catch (err: any) {
     console.error('加载数据失败:', err)
-    error.value = '加载仪表板数据失败，请刷新页面重试'
+    error.value = '加载仪表板数据失败，显示模拟数据'
     // 使用模拟数据作为后备方案
     loadMockData()
   }
