@@ -31,6 +31,8 @@ api.interceptors.request.use((config) => {
 })
 
 // 响应拦截器 - 处理错误
+// 注意：此拦截器会自动解包 response.data，因此后续的 API 方法会直接接收到数据
+// 确保后端始终返回一致的 ApiResponse 格式：{ success: boolean, data?: T, message?: string }
 api.interceptors.response.use(
   (response: AxiosResponse) => response.data,
   (error) => {
