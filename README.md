@@ -260,13 +260,17 @@ cd backend
 ```
 
 ### 技术架构
-- **表现层**: Vue.js 3.x + Element Plus
+- **表现层**: Vue.js 3.x + Ant Design Vue
 - **业务层**: Spring Boot + Spring Security
 - **数据层**: MySQL + Spring Data JPA
 - **缓存层**: Redis (Phase 2)
 - **消息队列**: RabbitMQ (Phase 2)
 
-详细架构设计请参考 [系统架构文档](docs/architecture.md)
+### 架构文档
+- **📖 [完整架构说明](docs/ARCHITECTURE_OVERVIEW.md)** - 系统架构全面解析（推荐阅读）
+- [系统架构设计](docs/architecture.md) - 架构设计详解
+- [数据库设计](docs/database-design.md) - 数据模型设计
+- [API 设计](docs/api-design.md) - API 接口规范
 
 ## 许可证
 
