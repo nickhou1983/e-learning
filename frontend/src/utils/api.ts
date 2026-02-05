@@ -459,6 +459,18 @@ export const saveNote = async (
 }
 
 export const updateNote = async (noteId: number, content: string): Promise<ApiResponse<Note>> => {
+  // Mock data override
+  if (USE_MOCK_DATA) {
+    await delay(200)
+    const note = mockNotes.find(n => n.id === noteId)
+    if (note) {
+      note.content = content
+      note.updatedAt = new Date().toISOString()
+      return { success: true, data: note }
+    }
+    return { success: false, message: '笔记不存在' }
+  }
+  
   try {
     const response = await api.put(`/notes/${noteId}`, { content })
     return ensureApiResponse<Note>(response)
@@ -471,6 +483,17 @@ export const updateNote = async (noteId: number, content: string): Promise<ApiRe
 }
 
 export const deleteNote = async (noteId: number): Promise<ApiResponse> => {
+  // Mock data override
+  if (USE_MOCK_DATA) {
+    await delay(200)
+    const index = mockNotes.findIndex(n => n.id === noteId)
+    if (index !== -1) {
+      mockNotes.splice(index, 1)
+      return { success: true, message: '笔记已删除' }
+    }
+    return { success: false, message: '笔记不存在' }
+  }
+  
   try {
     const response = await api.delete(`/notes/${noteId}`)
     return ensureApiResponse(response)

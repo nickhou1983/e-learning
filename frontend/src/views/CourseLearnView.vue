@@ -159,7 +159,7 @@ const handleVideoProgress = (time: number, duration: number) => {
   const courseId = parseInt(route.params.courseId as string)
   const lessonId = parseInt(route.params.lessonId as string)
   
-  // 节流：每5秒自动保存一次进度
+  // 自动保存进度：延迟1秒后保存，避免频繁请求
   if (autoSaveTimer.value) {
     clearTimeout(autoSaveTimer.value)
   }
