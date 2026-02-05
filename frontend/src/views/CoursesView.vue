@@ -121,13 +121,14 @@ const completedCourses = ref([
 ])
 
 const continueCourse = (courseId: number) => {
-  alert(`继续学习课程 ${courseId}`)
-  // router.push(`/course/${courseId}/learn`)
+  // 找到课程的第一个课时或最后学习的课时
+  // 这里简化处理，直接跳转到第一课时（假设lessonId为1）
+  router.push(`/course/${courseId}/lesson/1`)
 }
 
 const reviewCourse = (courseId: number) => {
-  alert(`复习课程 ${courseId}`)
-  // router.push(`/course/${courseId}/review`)
+  // 复习课程，跳转到第一课时
+  router.push(`/course/${courseId}/lesson/1`)
 }
 </script>
 

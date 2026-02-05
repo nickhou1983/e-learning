@@ -76,6 +76,13 @@ const router = createRouter({
       component: () => import('@/views/admin/CategoriesManagement.vue'),
       meta: { requiresAuth: true, requiresAdmin: true }
     },
+    // 课程学习页面
+    {
+      path: '/course/:courseId/lesson/:lessonId',
+      name: 'course-learn',
+      component: () => import('@/views/CourseLearnView.vue'),
+      meta: { requiresAuth: true }
+    },
     // 重定向根路径到登录页面
     {
       path: '/:pathMatch(.*)*',

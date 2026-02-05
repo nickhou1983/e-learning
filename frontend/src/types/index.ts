@@ -71,3 +71,27 @@ export interface ApiResponse<T = any> {
   message?: string
   error?: string
 }
+
+export interface Note {
+  id: number
+  userId: number
+  courseId: number
+  lessonId: number
+  content: string
+  timestamp?: number
+  createdAt: string
+  updatedAt?: string
+}
+
+export interface LessonProgress {
+  lessonId: number
+  completed: boolean
+  watchedDuration: number
+  lastPosition: number
+}
+
+export interface CourseDetail extends Course {
+  instructor?: User
+  lessons: Lesson[]
+  enrollment?: Enrollment
+}
