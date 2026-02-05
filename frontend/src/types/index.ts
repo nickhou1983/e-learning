@@ -35,7 +35,7 @@ export interface Course {
   categoryId: number
   difficulty: 'beginner' | 'intermediate' | 'advanced'
   duration: number
-  lessons: number
+  lessonCount: number
   rating: number
   enrolledCount: number
   thumbnail?: string
@@ -70,4 +70,27 @@ export interface ApiResponse<T = any> {
   data?: T
   message?: string
   error?: string
+}
+
+export interface Note {
+  id: number
+  userId: number
+  courseId: number
+  lessonId: number
+  content: string
+  timestamp?: number
+  createdAt: string
+  updatedAt?: string
+}
+
+export interface LessonProgress {
+  completed: boolean
+  watchedDuration: number
+  lastPosition: number
+}
+
+export interface CourseDetail extends Course {
+  instructor?: User
+  lessons: Lesson[]
+  enrollment?: Enrollment
 }

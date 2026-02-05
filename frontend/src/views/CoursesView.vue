@@ -26,7 +26,7 @@
                 <p>{{ course.instructor }}</p>
                 <div class="course-meta">
                   <span>已完成 {{ course.progress }}%</span>
-                  <span>{{ course.lessons }} 节课</span>
+                  <span>{{ course.lessonCount }} 节课</span>
                 </div>
                 <a-button type="primary" block @click="continueCourse(course.id)">
                   继续学习
@@ -80,7 +80,7 @@ const activeCourses = ref([
     title: 'Vue.js 3 完整教程',
     instructor: '张老师',
     progress: 65,
-    lessons: 24,
+    lessonCount: 24,
     thumbnail: '/images/courses/frontend.jpg'
   },
   {
@@ -88,7 +88,7 @@ const activeCourses = ref([
     title: 'TypeScript 从入门到精通',
     instructor: '李老师',
     progress: 45,
-    lessons: 18,
+    lessonCount: 18,
     thumbnail: '/images/courses/typescript.jpg'
   },
   {
@@ -96,7 +96,7 @@ const activeCourses = ref([
     title: 'React 高级开发实战',
     instructor: '王老师',
     progress: 30,
-    lessons: 32,
+    lessonCount: 32,
     thumbnail: '/images/courses/frontend.jpg'
   }
 ])
@@ -107,7 +107,7 @@ const completedCourses = ref([
     title: 'JavaScript 基础',
     instructor: '赵老师',
     progress: 100,
-    lessons: 20,
+    lessonCount: 20,
     thumbnail: '/images/courses/javascript.jpg'
   },
   {
@@ -115,19 +115,20 @@ const completedCourses = ref([
     title: 'CSS 进阶技巧',
     instructor: '周老师',
     progress: 100,
-    lessons: 16,
+    lessonCount: 16,
     thumbnail: '/images/courses/css.jpg'
   }
 ])
 
 const continueCourse = (courseId: number) => {
-  alert(`继续学习课程 ${courseId}`)
-  // router.push(`/course/${courseId}/learn`)
+  // 找到课程的第一个课时或最后学习的课时
+  // 这里简化处理，直接跳转到第一课时（假设lessonId为1）
+  router.push(`/course/${courseId}/lesson/1`)
 }
 
 const reviewCourse = (courseId: number) => {
-  alert(`复习课程 ${courseId}`)
-  // router.push(`/course/${courseId}/review`)
+  // 复习课程，跳转到第一课时
+  router.push(`/course/${courseId}/lesson/1`)
 }
 </script>
 
