@@ -35,7 +35,7 @@ export interface Course {
   categoryId: number
   difficulty: 'beginner' | 'intermediate' | 'advanced'
   duration: number
-  lessons: number
+  lessonCount: number
   rating: number
   enrolledCount: number
   thumbnail?: string
