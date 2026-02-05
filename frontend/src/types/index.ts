@@ -84,7 +84,6 @@ export interface Note {
 }
 
 export interface LessonProgress {
-  lessonId: number
   completed: boolean
   watchedDuration: number
   lastPosition: number

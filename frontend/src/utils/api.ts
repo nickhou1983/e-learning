@@ -1,8 +1,8 @@
 import axios, { type AxiosResponse } from 'axios'
 import type { LoginCredentials, RegisterData, User, Course, ApiResponse, CourseDetail, Lesson, Enrollment, Note, LessonProgress } from '@/types'
 
-// Mock data flag - set to true to use mock data during development
-const USE_MOCK_DATA = true
+// Mock data flag - controlled by environment variable
+const USE_MOCK_DATA = import.meta.env.VITE_USE_MOCK_DATA === 'true' || import.meta.env.MODE === 'development'
 
 // 创建 axios 实例
 const api = axios.create({

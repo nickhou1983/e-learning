@@ -130,7 +130,6 @@ const playbackRate = ref(1)
 const isMuted = ref(false)
 const isFullscreen = ref(false)
 const isEnded = ref(false)
-const lastProgressTime = ref(0)
 let controlsTimeout: number | null = null
 
 const progressPercent = computed(() => {
@@ -219,12 +218,8 @@ const onTimeUpdate = () => {
   if (!videoElement.value) return
   currentTime.value = videoElement.value.currentTime
   
-  // 每5秒发送一次进度更新，避免重复发送
-  const currentSecond = Math.floor(currentTime.value)
-  if (currentSecond > 0 && currentSecond % 5 === 0 && currentSecond !== lastProgressTime.value) {
-    lastProgressTime.value = currentSecond
-    emit('progress', currentTime.value, duration.value)
-  }
+  // 发送进度更新（父组件会进行防抖处理）
+  emit('progress', currentTime.value, duration.value)
 }
 
 const onEnded = () => {
@@ -271,7 +266,6 @@ onBeforeUnmount(() => {
 watch(() => props.videoUrl, () => {
   isEnded.value = false
   currentTime.value = 0
-  lastProgressTime.value = 0
 })
 </script>
 

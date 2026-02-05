@@ -73,7 +73,6 @@ export const useLearningStore = defineStore('learning', () => {
         // 初始化进度
         if (!lessonProgress.value[lessonId]) {
           lessonProgress.value[lessonId] = {
-            lessonId,
             completed: false,
             watchedDuration: 0,
             lastPosition: 0
@@ -97,7 +96,6 @@ export const useLearningStore = defineStore('learning', () => {
     progress: Partial<LessonProgress>
   ) => {
     const current = lessonProgress.value[lessonId] || {
-      lessonId,
       completed: false,
       watchedDuration: 0,
       lastPosition: 0
