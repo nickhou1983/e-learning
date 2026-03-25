@@ -51,6 +51,12 @@ const router = createRouter({
       component: () => import('@/views/SettingsView.vue'),
       meta: { requiresAuth: true }
     },
+    {
+      path: '/downloads',
+      name: 'downloads',
+      component: () => import('@/views/DownloadsView.vue'),
+      meta: { requiresAuth: true }
+    },
     // 管理员路由
     {
       path: '/admin/users',

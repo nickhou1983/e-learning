@@ -16,8 +16,8 @@ on:
 
 env:
   CONTAINER_NAME: elearning-frontend
-  RESOURCE_GROUP: DemoAKS-RG-HK
-  CLUSTER_NAME: demoaks-hk
+  RESOURCE_GROUP: DEMOAKS-RG
+  CLUSTER_NAME: demoaks
   DEPLOYMENT_MANIFEST_PATH: 'deployment/aks/frontend'
   ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER }}
 

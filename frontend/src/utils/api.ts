@@ -126,5 +126,75 @@ export const getCourse = async (id: number): Promise<ApiResponse<Course>> => {
   }
 }
 
+// 下载中心相关 API
+export const downloadAPI = {
+  // 获取文件列表
+  getFiles: async (params?: {
+    page?: number
+    size?: number
+    category?: string
+    tags?: string
+    search?: string
+    course_id?: number
+    lesson_id?: number
+    is_public?: boolean
+    sort_by?: string
+    order?: string
+  }) => {
+    return await api.get('/downloads/files', { params })
+  },
+
+  // 获取文件详情
+  getFileDetail: async (fileId: number) => {
+    return await api.get(`/downloads/files/${fileId}`)
+  },
+
+  // 上传文件
+  uploadFile: async (formData: FormData) => {
+    return await api.post('/downloads/files', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+  },
+
+  // 更新文件信息
+  updateFile: async (fileId: number, data: any) => {
+    return await api.put(`/downloads/files/${fileId}`, data)
+  },
+
+  // 删除文件
+  deleteFile: async (fileId: number) => {
+    return await api.delete(`/downloads/files/${fileId}`)
+  },
+
+  // 下载文件
+  downloadFile: async (fileId: number) => {
+    return await api.get(`/downloads/files/${fileId}/download`, {
+      responseType: 'blob'
+    })
+  },
+
+  // 获取我的下载记录
+  getMyRecords: async (params?: { page?: number; size?: number }) => {
+    return await api.get('/downloads/records/my', { params })
+  },
+
+  // 获取分类列表
+  getCategories: async () => {
+    return await api.get('/downloads/categories')
+  },
+
+  // 创建分类
+  createCategory: async (data: any) => {
+    return await api.post('/downloads/categories', data)
+  },
+
+  // 获取统计信息
+  getStatistics: async () => {
+    return await api.get('/downloads/statistics')
+  }
+}
+
 // 导出 axios 实例以供其他模块使用
 export default api
